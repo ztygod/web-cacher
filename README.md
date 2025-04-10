@@ -29,11 +29,6 @@ curl -fsSL https://raw.githubusercontent.com/yourname/web-cacher/install.sh | ba
 cargo install web-cacher --features "full"
 ```
 
-### Docker 运行
-```bash
-docker run -v $(pwd)/config.toml:/app/config.toml ghcr.io/yourname/web-cacher:latest
-```
-
 ## 🛠️ 快速开始
 
 1. 创建配置文件：
