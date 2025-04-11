@@ -1,4 +1,4 @@
-mod command;
+pub mod command;
 
 use clap::{Parser, Subcommand};
 use std::path::PathBuf;
