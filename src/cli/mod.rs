@@ -1,9 +1,10 @@
-pub mod command;
+pub mod args;
+pub mod handler;
 
-use clap::{Parser, Subcommand};
+use clap::Parser;
 use std::path::PathBuf;
 
-pub use command::Commands;
+pub use args::Commands;
 
 /// 主CLI结构
 #[derive(Parser, Debug)]

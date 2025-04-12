@@ -1,4 +1,5 @@
 mod cli;
+mod scheduler;
 
 use clap::{CommandFactory, Parser};
 use cli::command;
@@ -60,8 +61,8 @@ fn main() {
         }
 
         Commands::Completions(args) => {
-            use clap_complete::{generate_to, Shell};
-            use std::io;
+            use clap_complete::generate_to;
+            //use std::io;
 
             println!("🔧 生成 {:?} 补全脚本到 {:?}", args.shell, args.output);
             let mut cmd = Cli::command();
