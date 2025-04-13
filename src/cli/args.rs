@@ -57,6 +57,10 @@ pub struct CheckArgs {
     /// 显示完整响应内容
     #[clap(short, long)]
     pub verbose: bool,
+
+    ///超时时间(秒)
+    #[clap(short, long, default_value = "10")]
+    pub timeout: u64,
 }
 
 /// 缓存子命令

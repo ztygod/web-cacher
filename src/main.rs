@@ -1,10 +1,14 @@
 mod cli;
+mod fetcher;
 mod scheduler;
+mod utils;
 
+use anyhow::Result;
 use clap::{CommandFactory, Parser};
-use cli::command;
+use cli::args;
 use cli::{Cli, Commands};
-fn main() {
+#[tokio::main]
+async fn main() -> Result<()> {
     // 1.解析命令行参数
     let cli = Cli::parse();
 
@@ -32,14 +36,14 @@ fn main() {
         }
 
         Commands::Cache(cache_cmd) => match &cache_cmd {
-            command::CacheCommands::Clean(args) => {
+            args::CacheCommands::Clean(args) => {
                 println!("🧹 清理缓存（保留 {} 个）", args.keep);
                 if let Some(filter) = &args.filter {
                     println!("🔍 URL过滤: {}", filter);
                 }
                 println!("⚠️ 强制执行: {}", args.force);
             }
-            command::CacheCommands::List(args) => {
+            args::CacheCommands::List(args) => {
                 println!("📋 列出缓存");
                 if let Some(filter) = &args.filter {
                     println!("🔍 URL过滤: {}", filter);
@@ -75,4 +79,7 @@ fn main() {
             }
         }
     }
+
+    // 4.命令行执行
+    cli::handler::handle_command(cli).await
 }

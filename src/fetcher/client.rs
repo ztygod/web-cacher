@@ -1,4 +1,4 @@
-use anyhow::Ok;
+use anyhow::Result;
 use reqwest::Client;
 
 pub async fn fetch_url(url: &str) -> Result<String> {
