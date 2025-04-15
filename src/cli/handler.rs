@@ -7,8 +7,12 @@ use reqwest::Client;
 use serde_json::json;
 use tracing::info;
 
-use super::{args::CheckArgs, args::Commands, Cli};
+use super::{
+    args::{CheckArgs, Commands, RunArgs},
+    Cli,
+};
 use crate::{
+    daemon::daemonize,
     fetcher::{fetch_url, health::check_out},
     utils::sha256,
 };
@@ -16,6 +20,7 @@ use crate::{
 pub async fn handle_command(cli: Cli) -> Result<()> {
     match &cli.command {
         Commands::Check(args) => handle_check(args).await,
+        Commands::Run(args) => handle_run(args).await,
         _ => {
             println!("该命令还未是实现");
             Ok(())
@@ -101,4 +106,14 @@ async fn handle_check(args: &CheckArgs) -> Result<()> {
         println!("{}", serde_json::to_string_pretty(&output)?);
     }
     Ok(())
+}
+
+async fn handle_run(args: &RunArgs) -> Result<()> {
+    if args.daemon {
+        daemonize()?;
+    }
+
+    info!("Starting web-cacher service");
+
+    // 加载配置
 }

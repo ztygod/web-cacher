@@ -1,4 +1,7 @@
 mod cli;
+mod config;
+mod daemon;
+mod error;
 mod fetcher;
 mod scheduler;
 mod utils;
