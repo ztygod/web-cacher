@@ -1,15 +1,9 @@
-mod metrics;
+use std::sync::Arc;
 
-use crate::{config::Config, fetcher};
-use anyhow::Result;
-use metrics::Metrics;
-use tokio::time::Duration;
-use tracing::debug;
+use crate::fetcher;
+
+pub mod metrics;
 
 pub struct Scheduler {
-    config: Config,
-    metrics: Metrics,
-    interval: Duration,
+    client: Arc<fetcher::CustomClient>,
 }
-
-impl Scheduler {}

@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Ok, Result};
+use anyhow::{anyhow, Result};
 use serde::{Deserialize, Serialize};
 use std::{path::PathBuf, time::Duration};
 
@@ -47,12 +47,20 @@ pub struct RetryPolicy {
 impl MonitorConfig {
     //查找默认配置文件
     pub fn config_path() -> Result<PathBuf> {
-        Ok(PathBuf::from("config.toml"))
+        if let Ok(path) = std::env::var("MONITOR_CONFIG_PATH") {
+            Ok(PathBuf::from(path))
+        } else {
+            Ok(PathBuf::from("config.toml"))
+        }
     }
 
     // 加载配置文件，异步读取toml，并反序列化
     pub async fn load() -> Result<Self> {
         let path = Self::config_path()?;
+
+        if !path.exists() {
+            return Err(anyhow!("Config file not found: {}", path.display()));
+        }
         let content = tokio::fs::read_to_string(&path).await?;
         toml::from_str(&content)
             .map_err(|e| anyhow!("Failed to parse config from {}: {}", path.display(), e))
