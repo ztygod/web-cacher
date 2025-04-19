@@ -1,4 +1,7 @@
-use std::time::{Duration, Instant};
+use std::{
+    sync::{Arc, RwLock},
+    time::{Duration, Instant},
+};
 
 use anyhow::Result;
 use futures::future::join_all;
@@ -11,11 +14,7 @@ use super::{
     args::{CheckArgs, Commands, RunArgs},
     Cli,
 };
-use crate::{
-    daemon::daemonize,
-    fetcher::{fetch_url, health::check_out},
-    utils::sha256,
-};
+use crate::{fetcher::health::check_out, utils::sha256};
 
 pub async fn handle_command(cli: Cli) -> Result<()> {
     match &cli.command {
@@ -110,10 +109,18 @@ async fn handle_check(args: &CheckArgs) -> Result<()> {
 
 async fn handle_run(args: &RunArgs) -> Result<()> {
     if args.daemon {
-        daemonize()?;
+        println!("⚠️ 当前为 Windows 环境，暂不支持 daemon 模式");
     }
 
-    info!("Starting web-cacher service");
+    let urls = vec![
+        "https://example.com".to_string(),
+        "https://www.rust-lang.org".to_string(),
+    ];
 
-    // 加载配置
+    //共享状态
+    let state = Arc::new(RwLock::new(vec![]));
+
+    //立即执行
+    if args.immediate {}
+    Ok(())
 }

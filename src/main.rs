@@ -10,8 +10,10 @@ use anyhow::Result;
 use clap::{CommandFactory, Parser};
 use cli::args;
 use cli::{Cli, Commands};
+use tracing_subscriber;
 #[tokio::main]
 async fn main() -> Result<()> {
+    tracing_subscriber::fmt::init();
     // 1.解析命令行参数
     let cli = Cli::parse();
 
