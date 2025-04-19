@@ -23,4 +23,7 @@ sha2 = "0.10"
 thiserror = "1.0"
 prometheus-client = "0.22"
 axum = "0.7"
-
+chrono = { version = "0.4", features = ["serde"] }
+bytes = "1.5"
+similar = { version = "2.2", features = ["inline"] }
+html-escape = "0.2"
