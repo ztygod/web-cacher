@@ -4,6 +4,7 @@ pub mod health;
 
 use anyhow::Result;
 use reqwest::{Client, Response, StatusCode};
+use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::time::Duration;
 #[derive(Clone)]
@@ -59,6 +60,7 @@ impl CustomClient {
     }
 }
 
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct FetchResult {
     pub url: String,
     pub status: StatusCode,
