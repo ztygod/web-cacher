@@ -4,6 +4,7 @@ mod config;
 mod daemon;
 mod error;
 mod fetcher;
+mod report;
 mod scheduler;
 mod utils;
 

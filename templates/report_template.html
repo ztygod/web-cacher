@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Report - {{ current.url }}</title>
+    <style>
+        body {
+            font-family: monospace;
+            margin: 2em;
+        }
+
+        .change-group {
+            margin-bottom: 2em;
+            border: 1px solid #eee;
+            padding: 1em;
+        }
+
+        .del {
+            color: red;
+            background-color: #ffeeee;
+        }
+
+        .ins {
+            color: green;
+            background-color: #eeffee;
+        }
+
+        .eq {
+            color: gray;
+        }
+
+        .symbol {
+            margin-right: 1em;
+            opacity: 0.6;
+        }
+
+        .metadata {
+            background: #f5f5f5;
+            padding: 1em;
+            margin-bottom: 2em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25em 0.5em;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .status-2xx {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-3xx {
+            background: #2196F3;
+            color: white;
+        }
+
+        .status-4xx {
+            background: #FF9800;
+            color: white;
+        }
+
+        .status-5xx {
+            background: #F44336;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Change Detection Report</h1>
+
+    <div class="metadata">
+        <h2>URL: <a href="{{ current.url }}" target="_blank">{{ current.url }}</a></h2>
+
+        <div>
+            {% match current.status.as_u16() / 100 %}
+            {% when 2 %}
+            <span class="badge status-2xx">HTTP {{ current.status }}</span>
+            {% when 3 %}
+            <span class="badge status-3xx">HTTP {{ current.status }}</span>
+            {% when 4 %}
+            <span class="badge status-4xx">HTTP {{ current.status }}</span>
+            {% when 5 %}
+            <span class="badge status-5xx">HTTP {{ current.status }}</span>
+            {% else %}
+            <span class="badge">HTTP {{ current.status }}</span>
+            {% endmatch %}
+
+            <span>
+                Response time: {{ (current.duration.as_secs_f64() * 1000.0)|format("%.2f") }}ms
+                ({% if duration_change > 0.0 %}+{% endif %}{{ duration_change|format("%.1f") }}%)
+            </span>
+        </div>
+
+        <div>Detected at: {{ current.timestamp }}</div>
+        <div>Report generated at: {{ generated_time }}</div>
+    </div>
+
+    <div class="content-diff">
+        {{ diff_content|safe }}
+    </div>
+</body>
+
+</html>
