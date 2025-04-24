@@ -120,12 +120,5 @@ cargo run --example demo
 - **文档存档**：定期保存项目文档版本
 - **竞品分析**：监控竞品网站内容变化
 
-## 🤝 贡献指南
 
-欢迎提交PR！请遵循以下流程：
-1. Fork 仓库
-2. 创建特性分支 (`git checkout -b feat/awesome-feature`)
-3. 提交更改 (`git commit -am 'Add awesome feature'`)
-4. 推送到分支 (`git push origin feat/awesome-feature`)
-6. 创建Pull Request
 
