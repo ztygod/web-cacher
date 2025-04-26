@@ -78,31 +78,30 @@
         <h2>URL: <a href="{{ current.url }}" target="_blank">{{ current.url }}</a></h2>
 
         <div>
-            {% match current.status.as_u16() / 100 %}
+            {% match (status_code / 100) %}
             {% when 2 %}
-            <span class="badge status-2xx">HTTP {{ current.status }}</span>
+            <span class="badge status-2xx">HTTP {{ status_code }}</span>
             {% when 3 %}
-            <span class="badge status-3xx">HTTP {{ current.status }}</span>
+            <span class="badge status-3xx">HTTP {{ status_code }}</span>
             {% when 4 %}
-            <span class="badge status-4xx">HTTP {{ current.status }}</span>
+            <span class="badge status-4xx">HTTP {{ status_code }}</span>
             {% when 5 %}
-            <span class="badge status-5xx">HTTP {{ current.status }}</span>
+            <span class="badge status-5xx">HTTP {{ status_code }}</span>
             {% else %}
-            <span class="badge">HTTP {{ current.status }}</span>
+            <span class="badge">HTTP {{ status_code }}</span>
             {% endmatch %}
 
             <span>
-                Response time: {{ (current.duration.as_secs_f64() * 1000.0)|format("%.2f") }}ms
-                ({% if duration_change > 0.0 %}+{% endif %}{{ duration_change|format("%.1f") }}%)
+                Response time: {{ current_duration_ms }} ({{ duration_change_str }})
             </span>
         </div>
 
-        <div>Detected at: {{ current.timestamp }}</div>
+        <div>Detected at: {{ formatted_timestamp }}</div>
         <div>Report generated at: {{ generated_time }}</div>
     </div>
 
     <div class="content-diff">
-        {{ diff_content|safe }}
+        {{ diff_content}}
     </div>
 </body>
 
