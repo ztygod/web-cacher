@@ -1,4 +1,4 @@
-use crate::{cache, config::MonitorTask, fetcher};
+use crate::{cache, config::MonitorTask, fetcher, report};
 use anyhow::Result;
 use metrics::Metrics;
 use std::sync::Arc;
@@ -57,13 +57,20 @@ impl Scheduler {
                     //缓存比较和报警逻辑
                     if let Ok(status) = result {
                         if let Some(pre) = cache.get(&task.url).await? {
-                            if pre.hash != status.hash{
-                                
+                            if pre.hash != status.hash {
+                                report::html::generate_html_report(&pre, &c).await?;
+
+                                metrics.record_request(&task.url, status.is_health());
                             }
                         }
+                        cache.store(&task.url, &status).await?;
                     }
                 }
-            })
+            });
+
+            join_handles.push(handle);
         }
+        futures::future::join_all(join_handles).await;
+        Ok(())
     }
 }
