@@ -47,6 +47,7 @@ impl Scheduler {
                 let mut interval = tokio::time::interval(task.interval);
                 loop {
                     interval.tick().await;
+                    
 
                     //执行监控检查
                     let result = fetcher::check_url(&client, url, timeout).await;
